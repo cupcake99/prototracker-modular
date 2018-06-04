@@ -40,8 +40,8 @@ SynthModule * IntModule::createModule(ModularSynth& synth)
 
 void IntModule::onDial(int delta)
 {
-	setParam(0, static_cast<float>(delta) + mParams[0]);
-	snprintf(mLabel, sizeof(mLabel), "%.2f", mParams[0]);
+	setParam(0, delta + mParams[0]);
+	snprintf(mLabel, sizeof(mLabel), "%03.2d", static_cast<int>(mParams[0]));
 }
 
 
