@@ -38,7 +38,7 @@ protected:
 	void setBlockEnd(int row);
 	void copyBlock(int track);
 	void pasteBlock(int track);
-	void copyTrack(int track);
+	void copyTrack(int track, int copyMode);
 	void pasteTrack(int track);
 	void killTrack(int track);
 	virtual void findUnusedTrack(int track) = 0;
