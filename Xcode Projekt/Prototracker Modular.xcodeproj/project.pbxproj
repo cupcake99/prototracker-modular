@@ -183,7 +183,6 @@
 		307A816820B5EC2900C1FA54 /* AudioDeviceSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioDeviceSelector.h; path = ../src/AudioDeviceSelector.h; sourceTree = "<group>"; };
 		307A816920B5EC2900C1FA54 /* AutomationTrackInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AutomationTrackInfo.cpp; path = ../src/AutomationTrackInfo.cpp; sourceTree = "<group>"; };
 		307A816A20B5EC2900C1FA54 /* AutomationTrackInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutomationTrackInfo.h; path = ../src/AutomationTrackInfo.h; sourceTree = "<group>"; };
-		307A816B20B5EC2900C1FA54 /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Channel.h; path = ../src/Channel.h; sourceTree = "<group>"; };
 		307A816C20B5EC2900C1FA54 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Color.cpp; path = ../src/Color.cpp; sourceTree = "<group>"; };
 		307A816D20B5EC2900C1FA54 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Color.h; path = ../src/Color.h; sourceTree = "<group>"; };
 		307A816E20B5EC2900C1FA54 /* ColumnEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColumnEditor.cpp; path = ../src/ColumnEditor.cpp; sourceTree = "<group>"; };
@@ -400,7 +399,6 @@
 				307A814820B5EC2900C1FA54 /* AutomationEditor.h */,
 				307A816920B5EC2900C1FA54 /* AutomationTrackInfo.cpp */,
 				307A816A20B5EC2900C1FA54 /* AutomationTrackInfo.h */,
-				307A816B20B5EC2900C1FA54 /* Channel.h */,
 				307A816C20B5EC2900C1FA54 /* Color.cpp */,
 				307A816D20B5EC2900C1FA54 /* Color.h */,
 				307A816E20B5EC2900C1FA54 /* ColumnEditor.cpp */,
