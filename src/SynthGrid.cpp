@@ -1261,7 +1261,7 @@ void SynthGrid::pasteSynth()
 	synth.lock();
 	synth.copy(*mCopyBuffer);
 	synth.unlock();
-
+	
 	rebuildWires();
 	
 	refreshView();
