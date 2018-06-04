@@ -12,6 +12,7 @@
 		304927F320B4B4410038E787 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 304927F220B4B4410038E787 /* Cocoa.framework */; };
 		3049280720B4B5E50038E787 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 3049280620B4B5E50038E787 /* assets */; };
 		3049281020B4BB530038E787 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 3049280F20B4BB530038E787 /* SDLMain.m */; };
+		30683FF820C5BCA400E6B1C7 /* LerpModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30683FF620C5BCA400E6B1C7 /* LerpModule.cpp */; };
 		307A821420B5EC2900C1FA54 /* AudioDeviceSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307A814620B5EC2900C1FA54 /* AudioDeviceSelector.cpp */; };
 		307A821520B5EC2900C1FA54 /* AutomationEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307A814720B5EC2900C1FA54 /* AutomationEditor.cpp */; };
 		307A821620B5EC2900C1FA54 /* Emscripten.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307A814B20B5EC2900C1FA54 /* Emscripten.cpp */; };
@@ -143,6 +144,8 @@
 		3049280620B4B5E50038E787 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = "../../prototracker-modular/assets"; sourceTree = "<group>"; };
 		3049280E20B4BB530038E787 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDLMain.h; path = "Prototracker Modular/SDLMain.h"; sourceTree = "<group>"; };
 		3049280F20B4BB530038E787 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDLMain.m; path = "Prototracker Modular/SDLMain.m"; sourceTree = "<group>"; };
+		30683FF620C5BCA400E6B1C7 /* LerpModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LerpModule.cpp; sourceTree = "<group>"; };
+		30683FF720C5BCA400E6B1C7 /* LerpModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LerpModule.h; sourceTree = "<group>"; };
 		307A814620B5EC2900C1FA54 /* AudioDeviceSelector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioDeviceSelector.cpp; path = ../src/AudioDeviceSelector.cpp; sourceTree = "<group>"; };
 		307A814720B5EC2900C1FA54 /* AutomationEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AutomationEditor.cpp; path = ../src/AutomationEditor.cpp; sourceTree = "<group>"; };
 		307A814820B5EC2900C1FA54 /* AutomationEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutomationEditor.h; path = ../src/AutomationEditor.h; sourceTree = "<group>"; };
@@ -602,6 +605,8 @@
 				307A81BD20B5EC2900C1FA54 /* GlideModule.h */,
 				30045DEA20BAF6CE00DEC5CE /* IntModule.cpp */,
 				30045DEB20BAF6CE00DEC5CE /* IntModule.h */,
+				30683FF620C5BCA400E6B1C7 /* LerpModule.cpp */,
+				30683FF720C5BCA400E6B1C7 /* LerpModule.h */,
 				307A81BE20B5EC2900C1FA54 /* LinearModule.cpp */,
 				307A81BF20B5EC2900C1FA54 /* LinearModule.h */,
 				307A81C020B5EC2900C1FA54 /* MixerModule.cpp */,
@@ -765,6 +770,7 @@
 				307A824D20B5EC2900C1FA54 /* FilterModule.cpp in Sources */,
 				307A823D20B5EC2900C1FA54 /* AbsModule.cpp in Sources */,
 				307A823C20B5EC2900C1FA54 /* MessageManager.cpp in Sources */,
+				30683FF820C5BCA400E6B1C7 /* LerpModule.cpp in Sources */,
 				307A827720B5EC2900C1FA54 /* Value.cpp in Sources */,
 				307A825D20B5EC2900C1FA54 /* TransposeModule.cpp in Sources */,
 				307A821C20B5EC2900C1FA54 /* MainEditor.cpp in Sources */,
