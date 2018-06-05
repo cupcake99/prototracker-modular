@@ -53,6 +53,7 @@ void ConstModule::onDial(int delta)
 void ConstModule::onLoaded()
 {
 	// Trigger mLabel update
+	setOutput(0, 0);
 	onDial(0);
 }
 
