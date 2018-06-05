@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		30045DEC20BAF6CE00DEC5CE /* IntModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30045DEA20BAF6CE00DEC5CE /* IntModule.cpp */; };
+		3012B51D20C7489400C40A9C /* DebugModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3012B51B20C7489400C40A9C /* DebugModule.cpp */; };
 		303BC95420B4E9500098413A /* proto.icns in Resources */ = {isa = PBXBuildFile; fileRef = 303BC95320B4E9500098413A /* proto.icns */; };
 		304927F320B4B4410038E787 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 304927F220B4B4410038E787 /* Cocoa.framework */; };
 		3049280720B4B5E50038E787 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 3049280620B4B5E50038E787 /* assets */; };
@@ -137,6 +138,8 @@
 /* Begin PBXFileReference section */
 		30045DEA20BAF6CE00DEC5CE /* IntModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntModule.cpp; sourceTree = "<group>"; };
 		30045DEB20BAF6CE00DEC5CE /* IntModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntModule.h; sourceTree = "<group>"; };
+		3012B51B20C7489400C40A9C /* DebugModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugModule.cpp; sourceTree = "<group>"; };
+		3012B51C20C7489400C40A9C /* DebugModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugModule.h; sourceTree = "<group>"; };
 		303BC95320B4E9500098413A /* proto.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = proto.icns; path = "Prototracker Modular/proto.icns"; sourceTree = "<group>"; };
 		304927C820B4B1D90038E787 /* Prototracker Modular.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Prototracker Modular.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		304927CC20B4B1D90038E787 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Prototracker Modular/Info.plist"; sourceTree = "<group>"; };
@@ -583,6 +586,8 @@
 				307A81A920B5EC2900C1FA54 /* ContainerModule.h */,
 				307A81AA20B5EC2900C1FA54 /* DelayModule.cpp */,
 				307A81AB20B5EC2900C1FA54 /* DelayModule.h */,
+				3012B51B20C7489400C40A9C /* DebugModule.cpp */,
+				3012B51C20C7489400C40A9C /* DebugModule.h */,
 				307A81AC20B5EC2900C1FA54 /* DisplayModule.cpp */,
 				307A81AD20B5EC2900C1FA54 /* DisplayModule.h */,
 				307A81AE20B5EC2900C1FA54 /* DistortionModule.cpp */,
@@ -749,6 +754,7 @@
 				307A825220B5EC2900C1FA54 /* MulModule.cpp in Sources */,
 				307A821D20B5EC2900C1FA54 /* MessageBox.cpp in Sources */,
 				307A824320B5EC2900C1FA54 /* ClampModule.cpp in Sources */,
+				3012B51D20C7489400C40A9C /* DebugModule.cpp in Sources */,
 				307A825A20B5EC2900C1FA54 /* ShapeModule.cpp in Sources */,
 				307A823A20B5EC2900C1FA54 /* MacroInfo.cpp in Sources */,
 				307A827520B5EC2900C1FA54 /* TooltipManager.cpp in Sources */,
