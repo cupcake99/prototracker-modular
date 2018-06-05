@@ -982,7 +982,7 @@ void SynthGrid::changeTrack(int d)
 	}
 	
 	mEditorState.patternEditor.currentTrack = currentTrack;
-	showMessageV(MessageInfo, "Track %d", currentTrack + 1);
+	showMessageV(MessageInfo, replacePreviousMessage, "Track %d", currentTrack + 1);
 }
 
 
@@ -1243,7 +1243,7 @@ void SynthGrid::copySynth(int mode)
 
 	mCopyBuffer = getModularSynth().clone();
 
-	showMessageV(MessageInfo, mode == 0 ? "Synth layout copied" : "Synth layout cut");
+	showMessage(MessageInfo, mode == 0 ? "Synth layout copied" : "Synth layout cut");
 }
 
 
@@ -1263,7 +1263,7 @@ void SynthGrid::pasteSynth()
 
 	refreshView();
 
-	showMessageV(MessageInfo, "Synth layout pasted");
+	showMessage(MessageInfo, "Synth layout pasted");
 
 	notify();
 }

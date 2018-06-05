@@ -247,7 +247,7 @@ bool MainEditor::onEvent(SDL_Event& event)
 						{
 							mPlayer.getTrackState(track).enabled ^= true;
 
-							showMessageV(MessageInfo, "%s track %d", mPlayer.getTrackState(track).enabled ? "Unmuted" : "Muted", track + 1);
+							showMessageV(MessageInfo, replacePreviousMessage, "%s track %d", mPlayer.getTrackState(track).enabled ? "Unmuted" : "Muted", track + 1);
 
 							return true;
 						}

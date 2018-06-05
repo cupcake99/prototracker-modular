@@ -244,7 +244,7 @@ bool TrackEditor::onEvent(SDL_Event& event)
 						if (hex >= 0 && hex <= 9)
 						{
 							mTrackEditorState.editSkip = hex;
-							showMessageV(MessageInfo, "Edit skip: %d", hex);
+							showMessageV(MessageInfo, replacePreviousMessage, "Edit skip: %d", hex);
 						}
 						else if (event.key.keysym.sym == SDLK_c)
 						{
@@ -718,7 +718,7 @@ void TrackEditor::emptyRow(bool allTracks, int flags)
 
 void TrackEditor::copyTrack(int track, int copyMode)
 {
-	showMessageV(MessageInfo, copyMode == 0 ? "Copied track %d on clipboard" : "Cut track %d on clipboard", track + 1);
+	showMessageV(MessageInfo, copyMode == 0 ? "Copied track %d to clipboard" : "Cut track %d to clipboard", track + 1);
 
 	mEditorState.copyBuffer.copy(getCurrentPattern(track), 0, 255);
 }
