@@ -1,4 +1,5 @@
 #include "EGModule.h"
+#include "Renderer.h"
 #include <algorithm>
 
 EGModule::EGModule(ModularSynth& synth)
@@ -99,4 +100,19 @@ const char * EGModule::getName() const
 SynthModule * EGModule::createModule(ModularSynth& synth)
 {
 	return new EGModule(synth);
+}
+
+void EGModule::render(Renderer& renderer, const SDL_Rect& moduleArea, bool isSelected) const
+{
+	renderer.renderRect(moduleArea, getModuleColor(isSelected));
+
+	SDL_Rect led = {moduleArea.x + moduleArea.w - (moduleArea.w / 8) - 2, moduleArea.y + (moduleArea.h / 2) - 2, 4, 4};
+
+	if (mAmp > 0)
+	{
+		renderer.renderRect(led, Color(64 + ((255 - 64) * mAmp), 64 - (64 * mAmp), 64 - (64 * mAmp)));
+	}
+
+	SDL_Rect textArea = {moduleArea.x + 2, moduleArea.y + moduleArea.h / 2 - 4, 100, 100};
+	renderer.renderText(textArea, Color(255,255,255), getName());
 }

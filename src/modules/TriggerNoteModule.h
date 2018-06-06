@@ -4,6 +4,9 @@
 
 class TriggerNoteModule: public SynthModule
 {
+	int mActive;
+	float mLed;
+
 	TriggerNoteModule(ModularSynth& synth);
 
 public:
@@ -14,6 +17,7 @@ public:
 	static SynthModule * createModule(ModularSynth& synth);
 
 	virtual void cycle();
+	virtual void render(Renderer& renderer, const SDL_Rect& moduleArea, bool isSelected) const;
 
 	virtual const char * getName() const;
 	virtual const char * getInputName(int input) const;
