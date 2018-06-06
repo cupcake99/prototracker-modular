@@ -3,7 +3,7 @@
 #include <cstdio>
 
 DebugModule::DebugModule(ModularSynth& synth)
-:SynthModule(synth, moduleId, 1, 1, 1)
+:SynthModule(synth, moduleId, 2, 1, 1)
 {
 }
 
@@ -17,7 +17,7 @@ void DebugModule::cycle()
 
 const char * DebugModule::getInputName(int input) const
 {
-	static const char *names[] = {"Input"};
+	static const char *names[] = {"Input", "On/Off"};
 	return names[input];
 }
 
@@ -59,8 +59,8 @@ void DebugModule::render(Renderer& renderer, const SDL_Rect& moduleArea, bool is
 	renderer.renderRect(moduleArea, getModuleColor(isSelected));
 	SDL_Rect textArea = {moduleArea.x + 2, moduleArea.y + moduleArea.h / 2 - 4, 100, 100};
 	renderer.renderText(textArea, Color(255,255,255), getName());
-
-	printf("Debug Module %d: %+06.6f\n", static_cast<int>(getParam(0)), getInput(0));
+	if (getInput(1) >= 1)
+		printf("Debug Module %d: %+06.6f\n", static_cast<int>(getParam(0)), getInput(0));
 }
 
 void DebugModule::onDial(int delta)
