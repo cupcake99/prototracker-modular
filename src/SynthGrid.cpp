@@ -640,7 +640,7 @@ bool SynthGrid::onEvent(SDL_Event& event)
 					}
 					if (event.key.keysym.mod & (KMOD_SHIFT) && modularSynth.getModule(mSelectedModule) != NULL && modularSynth.getModule(mSelectedModule)->getNumParams() != 0)
 					{
-						int dialSpeed = 10;
+						int dialSpeed = 1;
 
 						modularSynth.lock();
 						modularSynth.getModule(mSelectedModule)->onDial(dialSpeed);
@@ -669,7 +669,7 @@ bool SynthGrid::onEvent(SDL_Event& event)
 					}
 					if (event.key.keysym.mod & (KMOD_SHIFT) && modularSynth.getModule(mSelectedModule) != NULL && modularSynth.getModule(mSelectedModule)->getNumParams() != 0)
 					{
-						int dialSpeed = 10;
+						int dialSpeed = 1;
 
 						modularSynth.lock();
 						modularSynth.getModule(mSelectedModule)->onDial(-dialSpeed);
@@ -698,7 +698,7 @@ bool SynthGrid::onEvent(SDL_Event& event)
 					}
 					if (event.key.keysym.mod & (KMOD_SHIFT) && modularSynth.getModule(mSelectedModule) != NULL && modularSynth.getModule(mSelectedModule)->getNumParams() != 0)
 					{
-						int dialSpeed = 1;
+						int dialSpeed = 10;
 
 						modularSynth.lock();
 						modularSynth.getModule(mSelectedModule)->onDial(dialSpeed);
@@ -727,7 +727,7 @@ bool SynthGrid::onEvent(SDL_Event& event)
 					}
 					if (event.key.keysym.mod & (KMOD_SHIFT) && modularSynth.getModule(mSelectedModule) != NULL && modularSynth.getModule(mSelectedModule)->getNumParams() != 0)
 					{
-						int dialSpeed = 1;
+						int dialSpeed = 10;
 
 						modularSynth.lock();
 						modularSynth.getModule(mSelectedModule)->onDial(-dialSpeed);
