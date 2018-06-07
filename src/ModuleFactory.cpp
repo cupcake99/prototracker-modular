@@ -36,6 +36,7 @@
 #include "modules/ExtOutModule.h"
 #include "modules/DisplayModule.h"
 #include "modules/IntModule.h"
+#include "modules/ButtonModule.h"
 #include "modules/DebugModule.h"
 #include <cstdlib>
 
@@ -73,6 +74,7 @@ ModuleFactory::ModuleFactory()
 	REGISTER(FrequencyInModule);
 	REGISTER(TransposeModule);
 	REGISTER(TriggerNoteModule);
+	REGISTER(ButtonModule);
 	REGISTER(DisplayModule);
 	REGISTER(OscilloscopeModule);
 	REGISTER(VUMeterModule);

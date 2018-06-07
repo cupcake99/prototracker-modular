@@ -14,6 +14,7 @@
 		3049280720B4B5E50038E787 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 3049280620B4B5E50038E787 /* assets */; };
 		3049281020B4BB530038E787 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 3049280F20B4BB530038E787 /* SDLMain.m */; };
 		30683FF820C5BCA400E6B1C7 /* LerpModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30683FF620C5BCA400E6B1C7 /* LerpModule.cpp */; };
+		307244DD20C9B26D0002817C /* ButtonModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307244DB20C9B26D0002817C /* ButtonModule.cpp */; };
 		307A821420B5EC2900C1FA54 /* AudioDeviceSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307A814620B5EC2900C1FA54 /* AudioDeviceSelector.cpp */; };
 		307A821520B5EC2900C1FA54 /* AutomationEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307A814720B5EC2900C1FA54 /* AutomationEditor.cpp */; };
 		307A821620B5EC2900C1FA54 /* Emscripten.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307A814B20B5EC2900C1FA54 /* Emscripten.cpp */; };
@@ -149,6 +150,8 @@
 		3049280F20B4BB530038E787 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDLMain.m; path = "Prototracker Modular/SDLMain.m"; sourceTree = "<group>"; };
 		30683FF620C5BCA400E6B1C7 /* LerpModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LerpModule.cpp; sourceTree = "<group>"; };
 		30683FF720C5BCA400E6B1C7 /* LerpModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LerpModule.h; sourceTree = "<group>"; };
+		307244DB20C9B26D0002817C /* ButtonModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ButtonModule.cpp; sourceTree = "<group>"; };
+		307244DC20C9B26D0002817C /* ButtonModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonModule.h; sourceTree = "<group>"; };
 		307A814620B5EC2900C1FA54 /* AudioDeviceSelector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioDeviceSelector.cpp; path = ../src/AudioDeviceSelector.cpp; sourceTree = "<group>"; };
 		307A814720B5EC2900C1FA54 /* AutomationEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AutomationEditor.cpp; path = ../src/AutomationEditor.cpp; sourceTree = "<group>"; };
 		307A814820B5EC2900C1FA54 /* AutomationEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutomationEditor.h; path = ../src/AutomationEditor.h; sourceTree = "<group>"; };
@@ -578,16 +581,18 @@
 				307A81A120B5EC2900C1FA54 /* AutomationModule.h */,
 				307A81A220B5EC2900C1FA54 /* BitsModule.cpp */,
 				307A81A320B5EC2900C1FA54 /* BitsModule.h */,
+				307244DB20C9B26D0002817C /* ButtonModule.cpp */,
+				307244DC20C9B26D0002817C /* ButtonModule.h */,
 				307A81A420B5EC2900C1FA54 /* ClampModule.cpp */,
 				307A81A520B5EC2900C1FA54 /* ClampModule.h */,
 				307A81A620B5EC2900C1FA54 /* ConstModule.cpp */,
 				307A81A720B5EC2900C1FA54 /* ConstModule.h */,
 				307A81A820B5EC2900C1FA54 /* ContainerModule.cpp */,
 				307A81A920B5EC2900C1FA54 /* ContainerModule.h */,
-				307A81AA20B5EC2900C1FA54 /* DelayModule.cpp */,
-				307A81AB20B5EC2900C1FA54 /* DelayModule.h */,
 				3012B51B20C7489400C40A9C /* DebugModule.cpp */,
 				3012B51C20C7489400C40A9C /* DebugModule.h */,
+				307A81AA20B5EC2900C1FA54 /* DelayModule.cpp */,
+				307A81AB20B5EC2900C1FA54 /* DelayModule.h */,
 				307A81AC20B5EC2900C1FA54 /* DisplayModule.cpp */,
 				307A81AD20B5EC2900C1FA54 /* DisplayModule.h */,
 				307A81AE20B5EC2900C1FA54 /* DistortionModule.cpp */,
@@ -752,6 +757,7 @@
 				307A827120B5EC2900C1FA54 /* SynthGridName.cpp in Sources */,
 				307A827420B5EC2900C1FA54 /* TooltipDisplayer.cpp in Sources */,
 				307A825220B5EC2900C1FA54 /* MulModule.cpp in Sources */,
+				307244DD20C9B26D0002817C /* ButtonModule.cpp in Sources */,
 				307A821D20B5EC2900C1FA54 /* MessageBox.cpp in Sources */,
 				307A824320B5EC2900C1FA54 /* ClampModule.cpp in Sources */,
 				3012B51D20C7489400C40A9C /* DebugModule.cpp in Sources */,
