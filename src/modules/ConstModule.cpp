@@ -10,10 +10,10 @@ ConstModule::ConstModule(ModularSynth& synth)
 void ConstModule::cycle()
 {
 	// 1.0 * const
-	setOutput(0, getParam(0));
-	
+	setOutput(0, getParam(0) / 100.0f);
+
 	// 0.001 * const
-	setOutput(1, getParam(0) / 1000.0f);
+	setOutput(1, getParam(0) / 100.0f / 1000.0f);
 }
 
 
@@ -45,8 +45,8 @@ SynthModule * ConstModule::createModule(ModularSynth& synth)
 
 void ConstModule::onDial(int delta)
 {
-	setParam(0, static_cast<float>(delta) * 0.01 + mParams[0]);
-	sprintf(mLabel, "%.2f", mParams[0]);
+	setParam(0, static_cast<float>((delta + static_cast<int>(mParams[0]))));
+	snprintf(mLabel, sizeof(mLabel), "%.2f", mParams[0] / 100.0f);
 }
 
 
