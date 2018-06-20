@@ -38,6 +38,7 @@
 #include "modules/IntModule.h"
 #include "modules/ButtonModule.h"
 #include "modules/DebugModule.h"
+#include "modules/SaturateModule.h"
 #include <cstdlib>
 
 #define REGISTER(module) registerModule(module::moduleId, module::moduleName, &module::createModule, module::maxInstances)
@@ -62,6 +63,7 @@ ModuleFactory::ModuleFactory()
 	REGISTER(MixerModule);
 	REGISTER(ClampModule);
 	REGISTER(ShapeModule);
+	REGISTER(SaturateModule);
 	REGISTER(LinearModule);
 	REGISTER(LerpModule);
 	REGISTER(DistortionModule);

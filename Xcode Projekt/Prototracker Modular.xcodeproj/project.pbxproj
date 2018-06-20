@@ -13,6 +13,7 @@
 		304927F320B4B4410038E787 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 304927F220B4B4410038E787 /* Cocoa.framework */; };
 		3049280720B4B5E50038E787 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 3049280620B4B5E50038E787 /* assets */; };
 		3049281020B4BB530038E787 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 3049280F20B4BB530038E787 /* SDLMain.m */; };
+		30683C4B20D9D6AB00350829 /* SaturateModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30683C4920D9D6AB00350829 /* SaturateModule.cpp */; };
 		30683FF820C5BCA400E6B1C7 /* LerpModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30683FF620C5BCA400E6B1C7 /* LerpModule.cpp */; };
 		307244DD20C9B26D0002817C /* ButtonModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307244DB20C9B26D0002817C /* ButtonModule.cpp */; };
 		307A821420B5EC2900C1FA54 /* AudioDeviceSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307A814620B5EC2900C1FA54 /* AudioDeviceSelector.cpp */; };
@@ -148,6 +149,8 @@
 		3049280620B4B5E50038E787 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = "../../prototracker-modular/assets"; sourceTree = "<group>"; };
 		3049280E20B4BB530038E787 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDLMain.h; path = "Prototracker Modular/SDLMain.h"; sourceTree = "<group>"; };
 		3049280F20B4BB530038E787 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDLMain.m; path = "Prototracker Modular/SDLMain.m"; sourceTree = "<group>"; };
+		30683C4920D9D6AB00350829 /* SaturateModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SaturateModule.cpp; sourceTree = "<group>"; };
+		30683C4A20D9D6AB00350829 /* SaturateModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaturateModule.h; sourceTree = "<group>"; };
 		30683FF620C5BCA400E6B1C7 /* LerpModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LerpModule.cpp; sourceTree = "<group>"; };
 		30683FF720C5BCA400E6B1C7 /* LerpModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LerpModule.h; sourceTree = "<group>"; };
 		307244DB20C9B26D0002817C /* ButtonModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ButtonModule.cpp; sourceTree = "<group>"; };
@@ -635,6 +638,8 @@
 				307A81CF20B5EC2900C1FA54 /* ReverbModule.h */,
 				307A81D020B5EC2900C1FA54 /* RMSModule.cpp */,
 				307A81D120B5EC2900C1FA54 /* RMSModule.h */,
+				30683C4920D9D6AB00350829 /* SaturateModule.cpp */,
+				30683C4A20D9D6AB00350829 /* SaturateModule.h */,
 				307A81D220B5EC2900C1FA54 /* ShapeModule.cpp */,
 				307A81D320B5EC2900C1FA54 /* ShapeModule.h */,
 				307A81D420B5EC2900C1FA54 /* SplitModule.cpp */,
@@ -730,6 +735,7 @@
 				307A822A20B5EC2900C1FA54 /* Color.cpp in Sources */,
 				307A822720B5EC2900C1FA54 /* TouchRegion.cpp in Sources */,
 				30045DEC20BAF6CE00DEC5CE /* IntModule.cpp in Sources */,
+				30683C4B20D9D6AB00350829 /* SaturateModule.cpp in Sources */,
 				307A822020B5EC2900C1FA54 /* ModuleFactory.cpp in Sources */,
 				307A825920B5EC2900C1FA54 /* RMSModule.cpp in Sources */,
 				307A824B20B5EC2900C1FA54 /* ExtInModule.cpp in Sources */,
