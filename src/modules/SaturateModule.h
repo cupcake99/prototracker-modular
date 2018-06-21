@@ -16,6 +16,7 @@ public:
 	static SynthModule * createModule(ModularSynth& synth);
 	
 	virtual void cycle();
+	virtual void onLoaded();
 	
 	virtual const char * getName() const;
 	virtual const char * getInputName(int input) const;
