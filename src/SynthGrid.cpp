@@ -811,6 +811,10 @@ bool SynthGrid::onEvent(SDL_Event& event)
 					else
 						changeTrack(1);
 					return true;
+
+				case SDLK_SPACE:
+					mPlayer.triggerNoteWithReset(mEditorState.patternEditor.currentTrack.getValue(), 0 + mEditorState.octave * 12, mEditorState.macro);
+					return true;
 			}
 		}
 	}
