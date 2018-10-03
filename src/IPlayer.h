@@ -50,6 +50,7 @@ public:
 	void play(int sequenceRow, int mode);
 	void stop();
 	void muteTracks();
+	void muteTracks(int i);
 	void triggerNote(int track, int note);
 	void triggerNote(int track, const PatternRow& row);
 	void triggerNoteWithReset(int track, int note, int macro = -1);

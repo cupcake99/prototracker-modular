@@ -380,6 +380,12 @@ void IPlayer::muteTracks()
 	}
 }
 
+void IPlayer::muteTracks(int i)
+{
+	ITrackState& trState = *trackState[i];
+	trState.trackState.volume = 0;
+}
+
 
 int IPlayer::getTick() const
 {

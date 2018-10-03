@@ -60,6 +60,7 @@ private:
 	int mFromModule, mFromOutput;
 	int mToModule, mToInput;
 	int mMouseX, mMouseY;
+	bool mPlayNote;
 	ModularSynth *mCopyBuffer;
 
 	int mModuleLocation[gridWidth * gridHeight][2];

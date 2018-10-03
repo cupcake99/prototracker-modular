@@ -20,7 +20,7 @@
 
 SynthGrid::SynthGrid(EditorState& editorState, ISynth& synth, IPlayer& player)
 	:Editor(editorState, true), mSynth(synth), mPlayer(player), mMode(IDLE), mSelectedModule(-1),
-	mHoveredConnection(-1), mCopyBuffer(NULL)
+	mHoveredConnection(-1), mPlayNote(false), mCopyBuffer(NULL)
 {
 	mModuleSelector = new ModuleSelector(editorState);
 	mFileSelector = new FileSelector(editorState);
@@ -813,9 +813,23 @@ bool SynthGrid::onEvent(SDL_Event& event)
 					return true;
 
 				case SDLK_SPACE:
-					mPlayer.triggerNoteWithReset(mEditorState.patternEditor.currentTrack.getValue(), 0 + mEditorState.octave * 12, mEditorState.macro);
+					if (!mPlayNote)
+					{
+						mPlayer.triggerNoteWithReset(mEditorState.patternEditor.currentTrack.getValue(), 0 + mEditorState.octave * 12, mEditorState.macro);
+						mPlayNote = true;
+					}
 					return true;
 			}
+		}
+	}
+	else if (event.type == SDL_KEYUP)
+	{
+		switch (event.key.keysym.sym)
+		{
+			case SDLK_SPACE:
+				mPlayer.muteTracks(mEditorState.patternEditor.currentTrack.getValue());
+				mPlayNote = false;
+				return true;
 		}
 	}
 	else if (event.type == SDL_MOUSEMOTION)
