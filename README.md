@@ -1,8 +1,6 @@
 # Prototracker-modular
 ## in the wilderness
 
-\*A mutant prototracker appeared\*
-
 This is an experimental branch of kometbomb's Prototracker-modular (see the original here: https://github.com/kometbomb/prototracker-modular/releases).
 
 From the original README: "Prototracker-modular is a modular synthesizer fork of Prototracker. The idea is that the user can define his/her "sound chip" using basic modules. Each channel has its own "sound chip". Otherwise, the tracker is exactly like any Prototracker fork.
