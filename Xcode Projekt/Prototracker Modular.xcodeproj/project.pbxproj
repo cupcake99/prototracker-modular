@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		30045DEC20BAF6CE00DEC5CE /* IntModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30045DEA20BAF6CE00DEC5CE /* IntModule.cpp */; };
+		30115FAA2172BF0500C77E44 /* DivModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30115FA62172BF0500C77E44 /* DivModule.cpp */; };
 		3012B51D20C7489400C40A9C /* DebugModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3012B51B20C7489400C40A9C /* DebugModule.cpp */; };
 		303BC95420B4E9500098413A /* proto.icns in Resources */ = {isa = PBXBuildFile; fileRef = 303BC95320B4E9500098413A /* proto.icns */; };
 		304927F320B4B4410038E787 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 304927F220B4B4410038E787 /* Cocoa.framework */; };
@@ -140,6 +141,8 @@
 /* Begin PBXFileReference section */
 		30045DEA20BAF6CE00DEC5CE /* IntModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntModule.cpp; sourceTree = "<group>"; };
 		30045DEB20BAF6CE00DEC5CE /* IntModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntModule.h; sourceTree = "<group>"; };
+		30115FA62172BF0500C77E44 /* DivModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DivModule.cpp; sourceTree = "<group>"; };
+		30115FA72172BF0500C77E44 /* DivModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivModule.h; sourceTree = "<group>"; };
 		3012B51B20C7489400C40A9C /* DebugModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugModule.cpp; sourceTree = "<group>"; };
 		3012B51C20C7489400C40A9C /* DebugModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugModule.h; sourceTree = "<group>"; };
 		303BC95320B4E9500098413A /* proto.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = proto.icns; path = "Prototracker Modular/proto.icns"; sourceTree = "<group>"; };
@@ -600,6 +603,8 @@
 				307A81AD20B5EC2900C1FA54 /* DisplayModule.h */,
 				307A81AE20B5EC2900C1FA54 /* DistortionModule.cpp */,
 				307A81AF20B5EC2900C1FA54 /* DistortionModule.h */,
+				30115FA62172BF0500C77E44 /* DivModule.cpp */,
+				30115FA72172BF0500C77E44 /* DivModule.h */,
 				307A81B020B5EC2900C1FA54 /* EffectModule.cpp */,
 				307A81B120B5EC2900C1FA54 /* EffectModule.h */,
 				307A81B220B5EC2900C1FA54 /* EGModule.cpp */,
@@ -802,6 +807,7 @@
 				307A826720B5EC2900C1FA54 /* Player.cpp in Sources */,
 				307A823E20B5EC2900C1FA54 /* AccumulatorModule.cpp in Sources */,
 				307A822620B5EC2900C1FA54 /* Theme.cpp in Sources */,
+				30115FAA2172BF0500C77E44 /* DivModule.cpp in Sources */,
 				307A825020B5EC2900C1FA54 /* LinearModule.cpp in Sources */,
 				307A825620B5EC2900C1FA54 /* PassthruModule.cpp in Sources */,
 				307A822220B5EC2900C1FA54 /* PatternEditor.cpp in Sources */,

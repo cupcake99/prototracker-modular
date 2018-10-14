@@ -39,6 +39,7 @@
 #include "modules/ButtonModule.h"
 #include "modules/DebugModule.h"
 #include "modules/SaturateModule.h"
+#include "modules/DivModule.h"
 #include <cstdlib>
 
 #define REGISTER(module) registerModule(module::moduleId, module::moduleName, &module::createModule, module::maxInstances)
@@ -52,6 +53,7 @@ ModuleFactory::ModuleFactory()
 	REGISTER(PassthruModule);
 	REGISTER(AddModule);
 	REGISTER(MulModule);
+	REGISTER(DivModule);
 	REGISTER(AbsModule);
 	REGISTER(RMSModule);
 	REGISTER(TickModule);
