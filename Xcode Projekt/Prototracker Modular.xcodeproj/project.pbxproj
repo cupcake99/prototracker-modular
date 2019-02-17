@@ -364,7 +364,6 @@
 		307A821320B5EC2900C1FA54 /* Value.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Value.h; path = ../src/Value.h; sourceTree = "<group>"; };
 		3092517420B60868002D6F35 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		3092517520B60868002D6F35 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
-		30BFC6E820BA2AC0004F93CB /* scratchpad */ = {isa = PBXFileReference; lastKnownFileType = text; name = scratchpad; path = "Prototracker Modular/scratchpad"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,7 +388,6 @@
 				3049280820B4B9C90038E787 /* Resources */,
 				304927F420B4B44E0038E787 /* Frameworks */,
 				304927C920B4B1D90038E787 /* Products */,
-				30BFC6E820BA2AC0004F93CB /* scratchpad */,
 			);
 			sourceTree = "<group>";
 		};
@@ -864,6 +862,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
