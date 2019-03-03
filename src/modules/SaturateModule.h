@@ -6,6 +6,8 @@ class SaturateModule: public SynthModule
 {
 	SaturateModule(ModularSynth& synth);
 	
+	float getDrive();
+	
 public:
 	virtual ~SaturateModule();
 	

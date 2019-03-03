@@ -17,9 +17,8 @@ SaturateModule::~SaturateModule()
 
 void SaturateModule::cycle()
 {
-	setOutput(0, tanh(getInput(0) * getInput(1)));
+	setOutput(0, std::fdimf(std::fabsf(getInput(0)), std::fabsf(std::tanh(getInput(0) * getDrive()))) > 0.0f ? getInput(0) : std::tanh(getInput(0) * getDrive()));
 }
-
 
 const char * SaturateModule::getInputName(int input) const
 {
@@ -47,4 +46,9 @@ SynthModule * SaturateModule::createModule(ModularSynth& synth)
 void SaturateModule::onLoaded()
 {
 	setInput(1, 1.0f);
+}
+
+float SaturateModule::getDrive()
+{
+	return std::fmaxf(0.0f, getInput(1));
 }
