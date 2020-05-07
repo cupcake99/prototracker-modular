@@ -772,15 +772,7 @@ bool SynthGrid::onEvent(SDL_Event& event)
 				case SDLK_F3:
 					if (event.key.keysym.mod & (KMOD_SHIFT))
 					{
-						copySynth(1);
-						for (int index = 0 ; index < ModularSynth::maxModules ; ++index)
-						{
-							modularSynth.lock();
-							modularSynth.removeModule(index);
-							modularSynth.unlock();
-						}
-
-						mMode = SELECTING_MODULE;
+						cutSynth();
 					}
 					else
 					{
@@ -903,6 +895,22 @@ void SynthGrid::onFileSelectorEvent(const Editor& selector, bool accept)
 				else
 					showMessage(MessageError, "Synth layout was not saved");
 				break;
+
+			case ChildModuleFileLoad: {
+				FILE *f = fopen(reinterpret_cast<const FileSelector&>(selector).getSelectedPath(), "rb");
+				
+				if (f == NULL)
+				{
+					showMessage(MessageError, "Could not open file");
+				}
+				else
+				{
+					mPlayer.lock();
+					mChildModuleFileSelectorCallback(f);
+					mPlayer.unlock();
+					fclose(f);
+				}
+			} break;
 		}
 	}
 
@@ -1191,6 +1199,21 @@ void SynthGrid::copySynth(int mode)
 }
 
 
+void SynthGrid::cutSynth()
+{
+	copySynth(1);
+	for (int index = 0 ; index < ModularSynth::maxModules ; ++index)
+	{
+		ModularSynth& synth = getModularSynth();
+		synth.lock();
+		synth.removeModule(index);
+		synth.unlock();
+	}
+
+	mMode = SELECTING_MODULE;
+}
+
+
 void SynthGrid::pasteSynth()
 {
 	if (mCopyBuffer == NULL)
@@ -1207,7 +1230,7 @@ void SynthGrid::pasteSynth()
 
 	refreshView();
 
-	showMessage(MessageInfo, "Synth layout pasted");
+	showMessageV(MessageInfo, "Synth layout pasted");
 
 	notify();
 }
@@ -1339,4 +1362,41 @@ void SynthGrid::refreshView()
 	rebuildWires();
 	invalidateAll();
 	notify();
+}
+
+
+void SynthGrid::onRequestCommandRegistration()
+{
+	registerCommand("Synth", "Copy synth layout", [this]() {
+		this->copySynth(0);
+	}, SDLK_F3);
+
+	registerCommand("Synth", "Paste synth layout", [this]() {
+		this->copySynth(0);
+	}, SDLK_F4);
+
+	registerCommand("Synth", "Load synth layout", [this]() {
+		this->displayLoadDialog();
+	}, SDLK_o, KMOD_CTRL);
+
+	registerCommand("Synth", "Save synth layout", [this]() {
+		this->displaySaveDialog();
+	}, SDLK_s, KMOD_CTRL);
+
+	registerCommand("Synth", "Go to parent synth", [this]() {
+		this->gotoParentSynth();
+	}, SDLK_BACKSPACE);
+}
+
+
+void SynthGrid::displayFileSelectionDialog(const char *title, const char *fileExtension, std::function<void(FILE*)> callback)
+{
+  mFileSelector->setId(ChildModuleFileLoad);
+	mFileSelector->setTitle(title);
+	mFileSelector->setFilter(fileExtension);
+	mFileSelector->setOverwriteCheck(false);
+	mFileSelector->populate();
+	setModal(mFileSelector);
+
+  mChildModuleFileSelectorCallback = callback;
 }

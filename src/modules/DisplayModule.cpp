@@ -53,15 +53,15 @@ void DisplayModule::render(Renderer& renderer, const SDL_Rect& moduleArea, bool 
 	renderer.renderRect(moduleArea, getModuleColor(isSelected));
 	SDL_Rect sign = {moduleArea.x + 3, moduleArea.y + 4, 5, 1};
 	SDL_Rect textArea = {moduleArea.x - 10, moduleArea.y + moduleArea.h / 2 - 4, 100, 100};
-
 	
-	if (getInput(0) >= 0)
+	float input = getInput(0);
+	if (input >= 0)
 	{
-		renderer.renderTextV(textArea, Color(255,255,255), "%+06.2f", getInput(0));
+		renderer.renderTextV(textArea, Color(255,255,255), "%+06.2f", input);
 	}
-	else if (getInput(0) < 0)
+	else if (input < 0)
 	{
 		renderer.renderRect(sign, Color(255,255,255));
-		renderer.renderTextV(textArea, Color(170,170,170), "%+06.2f", getInput(0) * -1);
+		renderer.renderTextV(textArea, Color(170,170,170), "%+06.2f", input * -1);
 	}
 }

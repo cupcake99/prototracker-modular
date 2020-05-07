@@ -2,11 +2,14 @@
 
 #include "SDL.h"
 #include "Listener.h"
+#include <functional>
+#include <vector>
 
 struct PlayerState;
 struct Renderer;
 struct EditorState;
-
+struct CommandOptionSelector;
+struct MainEditor;
 /*
 
 The Editor class is the base class for all GUI elements.
@@ -16,13 +19,34 @@ The Editor class is the base class for all GUI elements.
 class Editor: public Listener
 {
 public:
-	static const int maxChildren = 128;
 	static const int replacePreviousMessage = -1;
+	static const int modalMargin = 16;
 
 	enum MessageClass
 	{
 		MessageInfo,
 		MessageError
+	};
+
+	typedef std::function<void()> Command;
+	typedef std::function<void(int)> CommandWithOption;
+	typedef std::function<void(CommandOptionSelector& optionSelector)> CommandOptionFunc;
+
+	struct CommandDescriptor {
+		char context[200], name[200];
+		Command func;
+		CommandWithOption funcWithOption;
+		CommandOptionFunc option;
+		int sym, mod;
+
+		CommandDescriptor(const char *context, const char *name, Command func, int sym = -1, int mod = 0);
+		CommandDescriptor(const char *context, const char *name, CommandWithOption func, CommandOptionFunc option, int sym = -1, int mod = 0);
+	};
+
+	struct EditorChild {
+		Editor *editor;
+		SDL_Rect area;
+		EditorChild(Editor *editor, const SDL_Rect& area);
 	};
 
 private:
@@ -31,19 +55,19 @@ private:
 	void drawModal(Renderer& renderer);
 	virtual void onDraw(Renderer& renderer, const SDL_Rect& area) = 0;
 	void drawChildren(Renderer& renderer, const SDL_Rect& area);
-	void childAreaChanged(Editor *child);
+	void childAreaChanged(Editor *changedChild);
 
 protected:
 	Editor *mModal;
 	EditorState& mEditorState;
 	bool mIsDirty, mRedraw;
 	Editor *mParent;
-	Editor *mChildren[maxChildren];
-	SDL_Rect mChildrenArea[maxChildren];
+	std::vector<EditorChild> mChildren;
 	SDL_Rect mThisArea;
-	int mNumChildren;
 	bool mWantsFocus;
 	int mPopupMessageId;
+	std::vector<CommandDescriptor*> mCommands;
+	bool mMounted;
 
 	void removeFocus();
 	void setModal(Editor *modal);
@@ -59,6 +83,13 @@ protected:
 	/* Actual rendering of the message */
 	virtual int showMessageInner(MessageClass messageClass, int messageId, const char* message);
 
+	// Register commands only here so that the Editor is added as a child and the registration
+	// is propagated
+	virtual void onRequestCommandRegistration();
+
+	bool registerCommand(const char *context, const char *commandName, Command command, int sym = -1, int mod = 0);
+	bool registerCommand(const char *context, const char *commandName, CommandWithOption command, CommandOptionFunc option, int sym = -1, int mod = 0);
+
 public:
 	Editor(EditorState& editorState, bool wantFocus = true);
 	virtual ~Editor();
@@ -70,7 +101,12 @@ public:
 	virtual void onMessageBoxEvent(const Editor& messageBox, int code);
 	virtual void onListenableChange(Listenable *listenable);
 	virtual void onLoaded();
+
+	// When setting/unsetting as a modal
 	virtual void onModalStatusChange(bool isNowModal);
+
+	// When the Editor is rendered the first time
+	virtual void onRendererMount(const Renderer& renderer);
 	virtual bool isDirty() const;
 	bool isFocusable() const;
 	bool hasDirty() const;
@@ -109,6 +145,10 @@ public:
 	 * so that the parent Editor knows to process it.
 	 */
 	virtual bool onEvent(SDL_Event& event);
+
+	bool handleCommandShortcuts(MainEditor& mainEditor, const SDL_Event& event);
+	const std::vector<CommandDescriptor*>& getCommands() const;
+	std::vector<CommandDescriptor*> getChildCommands() const;
 
 	/**
 	 * Helper members

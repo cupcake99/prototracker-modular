@@ -4,6 +4,7 @@
 #include "Song.h"
 #include "EditorState.h"
 #include "Renderer.h"
+#include "Theme.h"
 #include "IPlayer.h"
 #include "PlayerState.h"
 #include "Color.h"
@@ -65,15 +66,11 @@ bool SequenceRowEditor::onEvent(SDL_Event& event)
 			{
 				case SDLK_DOWN:
 					scrollView(1, false);
-
 					return true;
-					break;
 
 				case SDLK_UP:
 					scrollView(-1, false);
-
 					return true;
-					break;
 
 				case SDLK_LEFT:
 					changeColumn(-1);
@@ -85,15 +82,11 @@ bool SequenceRowEditor::onEvent(SDL_Event& event)
 
 				case SDLK_HOME:
 					mTrackEditorState.currentRow = 0;
-
 					return true;
-					break;
 
 				case SDLK_END:
 					mTrackEditorState.currentRow = mSong.getSequenceLength() - 1;
-
 					return true;
-					break;
 
 				case SDLK_BACKSPACE:
 					if (mTrackEditorState.currentRow == 0)
@@ -101,17 +94,14 @@ bool SequenceRowEditor::onEvent(SDL_Event& event)
 					scrollView(-1, false);
 					deleteRow(false, 0);
 					return true;
-					break;
 
 				case SDLK_DELETE:
 					deleteRow(false, 0);
 					return true;
-					break;
 
 				case SDLK_INSERT:
 					insertRow(false, 0);
 					return true;
-					break;
 
 				case SDLK_RETURN:
 #ifdef __MAC_KEYS__
@@ -144,15 +134,7 @@ bool SequenceRowEditor::onEvent(SDL_Event& event)
 				default:
 				{
 					if (event.key.keysym.mod & KMOD_CTRL)
-					{
-						if (event.key.keysym.sym == SDLK_d)
-						{
-							duplicateRow();
-							return true;
-						}
-
 						break;
-					}
 
 					if (!mEditorState.editMode)
 						break;
@@ -178,7 +160,7 @@ bool SequenceRowEditor::onEvent(SDL_Event& event)
 						return true;
 					}
 				}
-					break;
+				break;
 
 			}
 			break;
@@ -247,7 +229,7 @@ void SequenceRowEditor::onDraw(Renderer& renderer, const SDL_Rect& area)
 	int trackWidth = 2 * renderer.getFontWidth() + mTrackMargin;
 	int rowHeight = renderer.getFontHeight();
 
-	int countVisible = area.h / 8;
+	int countVisible = area.h / renderer.getFontHeight();
 	int firstVisible = mTrackEditorState.currentRow - countVisible / 2;
 	int lastVisible = mTrackEditorState.currentRow + countVisible / 2;
 
@@ -261,21 +243,21 @@ void SequenceRowEditor::onDraw(Renderer& renderer, const SDL_Rect& area)
 
 	if (hasFocus())
 	{
-		int columnWidth = 8;
+		int columnWidth = renderer.getFontWidth();
 
-		int columnX = 8 * mTrackEditorState.currentColumn;
+		int columnX = renderer.getFontWidth() * mTrackEditorState.currentColumn;
 
 		SDL_Rect textArea = {mTrackEditorState.currentTrack * trackWidth + area.x + rowNumberWidth + columnX, area.y + centerY, columnWidth, rowHeight};
-		renderer.renderRect(textArea, Color::getColor(mEditorState.editMode ? Color::ColorType::EditCursor : Color::ColorType::NonEditCursor));
+		renderer.clearRect(textArea, mEditorState.editMode ? Theme::ColorType::EditCursor : Theme::ColorType::NonEditCursor);
 	}
 
 	for (int row = firstVisible ; row <= lastVisible ; ++row)
 	{
 		SDL_Rect textArea = {area.x, (row - mTrackEditorState.currentRow) * rowHeight + area.y + centerY, trackWidth, rowHeight};
-		Color color = Color::getColor(Color::ColorType::RowCounter);
+		Theme::ColorType color = Theme::ColorType::RowCounter;
 
 		if (row == mTrackEditorState.currentRow)
-			color = Color(0,0,0);
+			color = Theme::ColorType::CurrentRow;
 
 		renderer.renderTextV(textArea, color, "%02d", row);
 	}
@@ -287,17 +269,17 @@ void SequenceRowEditor::onDraw(Renderer& renderer, const SDL_Rect& area)
 		{
 			SDL_Rect textArea = {track * trackWidth + area.x + rowNumberWidth, (row - mTrackEditorState.currentRow) * rowHeight + area.y + centerY, trackWidth, rowHeight};
 
-			Color color;
+			Theme::ColorType color = Theme::ColorType::NormalText;
 
 			if (row == mTrackEditorState.currentRow)
 			{
 				// Black text color
-				color = Color(0,0,0);
+				color = Theme::ColorType::CurrentRow;
 			}
 			else if (isRowActive(track, row))
 			{
 				// Highlight current play row green
-				renderer.renderRect(textArea, Color(0,64,0));
+				renderer.clearRect(textArea, Theme::ColorType::PlayHead);
 			}
 
 			renderer.renderTextV(textArea, color, "%02x", sequenceRow.pattern[track]);
@@ -333,4 +315,10 @@ bool SequenceRowEditor::isRowActive(int track, int row) const
 {
 	const PlayerState& playerState = mPlayer.getPlayerState();
 	return playerState.isPlaying() && playerState.sequenceRow == row;
+}
+
+
+void SequenceRowEditor::onRequestCommandRegistration()
+{
+	registerCommand("Sequence", "Duplicate sequence row", [this]() { this->duplicateRow(); }, SDLK_d, KMOD_CTRL);
 }

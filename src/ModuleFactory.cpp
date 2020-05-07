@@ -5,12 +5,14 @@
 #include "modules/PassthruModule.h"
 #include "modules/AddModule.h"
 #include "modules/MulModule.h"
+#include "modules/DivModule.h"
 #include "modules/AbsModule.h"
 #include "modules/AutomationModule.h"
 #include "modules/ConstModule.h"
 #include "modules/EffectModule.h"
 #include "modules/EGModule.h"
 #include "modules/RMSModule.h"
+#include "modules/VolumeModule.h"
 #include "modules/FilterModule.h"
 #include "modules/GlideModule.h"
 #include "modules/SplitModule.h"
@@ -32,6 +34,7 @@
 #include "modules/OscilloscopeModule.h"
 #include "modules/VUMeterModule.h"
 #include "modules/ContainerModule.h"
+#include "modules/VirtualModule.h"
 #include "modules/ExtInModule.h"
 #include "modules/ExtOutModule.h"
 #include "modules/DisplayModule.h"
@@ -40,6 +43,7 @@
 #include "modules/DebugModule.h"
 #include "modules/SaturateModule.h"
 #include "modules/DivModule.h"
+#include "modules/SampleModule.h"
 #include <cstdlib>
 
 #define REGISTER(module) registerModule(module::moduleId, module::moduleName, &module::createModule, module::maxInstances)
@@ -49,6 +53,7 @@ ModuleFactory::ModuleFactory()
 	REGISTER(OscillatorModule);
 	REGISTER(NoiseModule);
 	REGISTER(PulseModule);
+	REGISTER(SampleModule);
 	REGISTER(EGModule);
 	REGISTER(PassthruModule);
 	REGISTER(AddModule);
@@ -76,6 +81,7 @@ ModuleFactory::ModuleFactory()
 	REGISTER(GlideModule);
 	REGISTER(AccumulatorModule);
 	REGISTER(FrequencyInModule);
+	REGISTER(VolumeModule);
 	REGISTER(TransposeModule);
 	REGISTER(TriggerNoteModule);
 	REGISTER(ButtonModule);
@@ -84,6 +90,7 @@ ModuleFactory::ModuleFactory()
 	REGISTER(VUMeterModule);
 	REGISTER(AudioOutModule);
 	REGISTER(ContainerModule);
+	REGISTER(VirtualModule);
 	REGISTER(ExtInModule);
 	REGISTER(ExtOutModule);
 	REGISTER(DebugModule);

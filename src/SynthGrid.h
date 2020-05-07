@@ -6,6 +6,8 @@
 #include "PathFinder.h"
 #include "Listenable.h"
 #include <stack>
+#include <cstdio>
+#include <functional>
 
 class ISynth;
 class IPlayer;
@@ -44,6 +46,7 @@ private:
 		FileSelectionLoad,
 		FileSelectionSave,
 		ModuleSelection,
+		ChildModuleFileLoad,
 	};
 
 	enum SynthGridMode
@@ -67,6 +70,8 @@ private:
 	std::vector<PathFinder::Node> mNetwork;
 	std::vector<std::vector<SDL_Point> > mConnectionPath;
 
+	std::function<void(FILE*)> mChildModuleFileSelectorCallback;
+
 	void initNetwork();
 	void rebuildWires();
 	void refreshView();
@@ -85,6 +90,7 @@ private:
 	void endConnect(int module, int connector);
 
 	void copySynth(int mode);
+	void cutSynth();
 	void pasteSynth();
 	void gotoParentSynth();
 	void changeTrack(int d);
@@ -110,4 +116,7 @@ public:
 	virtual void onFileSelectorEvent(const Editor& moduleSelector, bool accept);
 	virtual void onListenableChange(Listenable *listenable);
 	virtual void onLoaded();
+	virtual void onRequestCommandRegistration();
+
+	void displayFileSelectionDialog(const char *title, const char *fileExtension, std::function<void(FILE*)> callback);
 };

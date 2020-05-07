@@ -1,6 +1,7 @@
 #include "Debug.h"
 #include "MainEditor.h"
 #include "IPlayer.h"
+#include "Debug.h"
 #include "PatternEditor.h"
 #include "Oscilloscope.h"
 #include "MacroEditor.h"
@@ -21,6 +22,7 @@
 #include "ISynth.h"
 #include "Mixer.h"
 #include "Value.h"
+#include "Debug.h"
 #include "SequenceRow.h"
 #include "ITrackState.h"
 #include "FileSection.h"
@@ -28,6 +30,8 @@
 #include "TouchRegion.h"
 #include "FileSelector.h"
 #include "AudioDeviceSelector.h"
+#include "CommandSelector.h"
+#include "CommandOptionSelector.h"
 #include "Emscripten.h"
 #include "MessageManager.h"
 #include "MessageDisplayer.h"
@@ -57,15 +61,20 @@
 
 MainEditor::MainEditor(EditorState& editorState, IPlayer& player, PlayerState& playerState, Song& song, ISynth& synth, Mixer& mixer)
 	: Editor(editorState), mPlayer(player), mPlayerState(playerState), mSong(song), mSynth(synth), mMixer(mixer), mIsDragging(false),
-	synthGrid()
+	synthGrid(), mSelectedCommand(NULL)
 {
 	mOscillatorsProbePos = new Value();
 
 	fileSelector = new FileSelector(editorState);
 	audioDeviceSelector = new AudioDeviceSelector(editorState);
+	commandSelector = new CommandSelector(editorState, *this);
+	commandOptionSelector = NULL;
 
 	mMessageManager = new MessageManager();
 	mTooltipManager = new TooltipManager();
+
+	// This is a special case because MainEditor is never added as a child so we trigger this here.
+	onRequestCommandRegistration();
 }
 
 
@@ -74,20 +83,29 @@ MainEditor::~MainEditor()
 	delete mOscillatorsProbePos;
 	delete fileSelector;
 	delete audioDeviceSelector;
+	delete commandSelector;
+
+	if (commandOptionSelector != NULL)
+		delete commandOptionSelector;
 
 	deleteChildren();
 
 	delete mMessageManager;
 	delete mTooltipManager;
+
+	for (auto desc : mCommands)
+	{
+		delete desc;
+	}
 }
 
 
 void MainEditor::deleteChildren()
 {
-	for (int index = 0; index < mNumChildren ; ++index)
-		delete mChildren[index];
+	for (auto child : mChildren)
+		delete child.editor;
 
-	mNumChildren = 0;
+	mChildren.clear();
 }
 
 
@@ -103,6 +121,13 @@ void MainEditor::startDragging(int x, int y)
 void MainEditor::stopDragging()
 {
 	mIsDragging = false;
+}
+
+
+void MainEditor::togglePositionFollowing()
+{
+	mEditorState.followPlayPosition = !mEditorState.followPlayPosition;
+	showMessage(MessageInfo, mEditorState.followPlayPosition ? "Cursor now follows play position" : "Disabled play position following");
 }
 
 
@@ -125,11 +150,11 @@ bool MainEditor::onEvent(SDL_Event& event)
 	{
 		SDL_Point point = {event.button.x/SCALE, event.button.y/SCALE};
 
-		for (int index = 0 ; index < mNumChildren ; ++index)
+		for (auto child : mChildren)
 		{
-			if (pointInRect(point, mChildrenArea[index]))
+			if (pointInRect(point, child.area))
 			{
-				target = mChildren[index];
+				target = child.editor;
 				break;
 			}
 		}
@@ -140,11 +165,11 @@ bool MainEditor::onEvent(SDL_Event& event)
 	{
 		SDL_Point point = {event.motion.x/SCALE, event.motion.y/SCALE};
 
-		for (int index = 0 ; index < mNumChildren ; ++index)
+		for (auto child : mChildren)
 		{
-			if (pointInRect(point, mChildrenArea[index]))
+			if (pointInRect(point, child.area))
 			{
-				target = mChildren[index];
+				target = child.editor;
 				break;
 			}
 		}
@@ -205,29 +230,16 @@ bool MainEditor::onEvent(SDL_Event& event)
 		setFocus(target);
 	}
 
+	if (event.type == SDL_KEYDOWN && target)
+	{
+		target->handleCommandShortcuts(*this, event);
+	}
+
 	switch (event.type)
 	{
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.sym)
 			{
-				case SDLK_F1:
-					mEditorState.octave = std::max(0, mEditorState.octave - 1);
-					return true;
-
-				case SDLK_F2:
-					mEditorState.octave = std::min(15, mEditorState.octave + 1);
-					return true;
-
-				case SDLK_F9:
-					mSong.setPatternLength(std::max(1, mSong.getPatternLength() - 1));
-					refreshAll();
-					return true;
-
-				case SDLK_F10:
-					mSong.setPatternLength(std::min(Pattern::maxRows, mSong.getPatternLength() + 1));
-					refreshAll();
-					return true;
-
 				/* Mute tracks */
 				case SDLK_1:
 				case SDLK_2:
@@ -245,10 +257,7 @@ bool MainEditor::onEvent(SDL_Event& event)
 
 						if (track < SequenceRow::maxTracks)
 						{
-							mPlayer.getTrackState(track).enabled ^= true;
-
-							showMessageV(MessageInfo, replacePreviousMessage, "%s track %d", mPlayer.getTrackState(track).enabled ? "Unmuted" : "Muted", track + 1);
-
+							toggleTrackMuting(track);
 							return true;
 						}
 					}
@@ -260,9 +269,7 @@ bool MainEditor::onEvent(SDL_Event& event)
 #ifndef __MAC_KEYS__
 				case SDLK_RCTRL:
 #endif
-					mPlayer.play(mEditorState.sequenceEditor.currentRow);
-					mEditorState.editMode = false;
-					refreshAll();
+					playSong();
 					return true;
 
 				/* F5 and F6 also used for laptops etc. keyboards with (very) limited key layout */
@@ -270,9 +277,7 @@ bool MainEditor::onEvent(SDL_Event& event)
 #ifndef __MAC_KEYS__
 				case SDLK_RSHIFT:
 #endif
-					mPlayer.play(mEditorState.sequenceEditor.currentRow, PlayerState::PlaySequenceRow);
-					mEditorState.editMode = false;
-					refreshAll();
+					playPattern();
 					return true;
 
 				case SDLK_SPACE:
@@ -284,21 +289,20 @@ bool MainEditor::onEvent(SDL_Event& event)
 						}
 						else
 						{
-							mEditorState.editMode = !mEditorState.editMode;
-							refreshAll();
+							toggleEditMode();
 						}
-						mPlayer.muteTracks();
+
+						muteTracks();
 					}
 					else
 					{
-						mEditorState.editMode = !mEditorState.editMode;
-						refreshAll();
+						toggleEditMode();
 
 						// Should only mute tracks when stopped, i.e.
 						// the user has played a note and wants to stop it
 						// and not when editing while playing the song
 						if (mPlayerState.mode == PlayerState::Stop)
-							mPlayer.muteTracks();
+							muteTracks();
 					}
 
 					return true;
@@ -342,12 +346,8 @@ bool MainEditor::onEvent(SDL_Event& event)
 					setMacro(mEditorState.macro);
 					return true;
 
-				case SDLK_CAPSLOCK:
 				case SDLK_SCROLLLOCK:
-					mEditorState.followPlayPosition = !mEditorState.followPlayPosition;
-
-					showMessage(MessageInfo, mEditorState.followPlayPosition ? "Cursor now follows play position" : "Disabled play position following");
-
+					togglePositionFollowing();
 					break;
 
 				default:
@@ -355,25 +355,11 @@ bool MainEditor::onEvent(SDL_Event& event)
 					{
 						switch (event.key.keysym.sym)
 						{
-							case SDLK_s:
-								displaySaveDialog();
-								break;
-
 							case SDLK_p:
-								exportSong();
-								break;
-
-							case SDLK_o:
-								displayLoadDialog();
-								break;
-
-							case SDLK_a:
-								displayAudioDeviceDialog();
-								break;
-
-							case SDLK_n:
-								newSong();
-								showMessage(MessageInfo, "Song reset");
+								if (event.key.keysym.mod & KMOD_SHIFT)
+									displayCommandPalette();
+								else
+									exportSong();
 								break;
 						}
 
@@ -394,12 +380,10 @@ bool MainEditor::onEvent(SDL_Event& event)
 					else
 						mPlayer.stop();
 					return true;
-					break;
 
 				case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
 					cycleFocus(1);
 					return true;
-					break;
 			}
 
 			break;
@@ -427,14 +411,15 @@ void MainEditor::cycleFocus(int direction)
 {
 	int index = 0;
 	Editor *currentFocus = getFocus();
+	int numChildren = mChildren.size();
 
-	for (; index < mNumChildren ; ++index)
-		if (mChildren[index] == currentFocus)
+	for (; index < numChildren ; ++index)
+		if (mChildren[index].editor == currentFocus)
 		{
 			break;
 		}
 
-	if (index >= mNumChildren)
+	if (index >= numChildren)
 		index = 0;
 	
 	switch (direction)
@@ -442,21 +427,21 @@ void MainEditor::cycleFocus(int direction)
 		case 1:
 			do
 			{
-				index = (index + 1) % mNumChildren;
+				index = (index + 1) % numChildren;
 			}
-			while (!mChildren[index]->isFocusable());
+			while (!mChildren[index].editor->isFocusable());
 			break;
 	
 		case -1:
 			do
 			{
-				index = (index + (mNumChildren - 1)) % mNumChildren;
+				index = (index + (numChildren - 1)) % numChildren;
 			}
-			while (!mChildren[index]->isFocusable());
+			while (!mChildren[index].editor->isFocusable());
 			break;
 	}
 	
-	setFocus(mChildren[index]);
+	setFocus(mChildren[index].editor);
 
 	setDirty(true);
 }
@@ -610,6 +595,13 @@ void MainEditor::refreshAll()
 
 void MainEditor::onFileSelectorEvent(const Editor& selector, bool accept)
 {
+
+
+	// Close modal after accept - disable for CommandSelector so a new modal opened by
+	// the command is not closed immediately.
+
+	bool closeModal = true;
+
 	if (accept)
 	{
 		int id = reinterpret_cast<const GenericSelector&>(selector).getId();
@@ -630,10 +622,29 @@ void MainEditor::onFileSelectorEvent(const Editor& selector, bool accept)
 			case AudioDeviceSelection:
 				setAudioDevice(reinterpret_cast<const AudioDeviceSelector&>(selector).getSelectedDevice());
 				break;
+
+			case CommandSelection: {
+				const CommandDescriptor& command = reinterpret_cast<const CommandSelector&>(selector).getSelectedCommand();
+				setModal(NULL);
+				closeModal = false;
+				if (command.option)
+					displayCommandOptionDialog(command);
+				else
+					command.func();
+			} break;
+
+			case CommandOptionSelection: {
+				const CommandOptionSelector& optionSelector = reinterpret_cast<const CommandOptionSelector&>(selector);
+				const CommandOptionSelector::CommandOption& option = optionSelector.getSelectedOption();
+				setModal(NULL);
+				closeModal = false;
+				mSelectedCommand->funcWithOption(option.value);
+			} break;
 		}
 	}
 
-	setModal(NULL);
+	if (closeModal)
+		setModal(NULL);
 }
 
 
@@ -671,11 +682,7 @@ void MainEditor::displayAudioDeviceDialog()
 
 std::string MainEditor::getUserFile(const char *file) const
 {
-#ifndef __EMSCRIPTEN__
 	return std::string(SDL_GetPrefPath(APP_NAME, APP_NAME)) + file;
-#else
-	return std::string("/persistent/") + file;
-#endif
 }
 
 
@@ -943,9 +950,37 @@ void MainEditor::playSong()
 }
 
 
+void MainEditor::playPattern()
+{
+	mPlayer.play(mEditorState.sequenceEditor.currentRow, PlayerState::PlaySequenceRow);
+	mEditorState.editMode = false;
+	refreshAll();
+}
+
+
 void MainEditor::stopSong()
 {
 	mPlayer.stop();
+	refreshAll();
+}
+
+
+void MainEditor::muteTracks()
+{
+	mPlayer.muteTracks();
+}
+
+
+void MainEditor::toggleTrackMuting(int track)
+{
+	mPlayer.getTrackState(track).enabled ^= true;
+	showMessageV(MessageInfo, "%s track %d", mPlayer.getTrackState(track).enabled ? "Unmuted" : "Muted", track);
+}
+
+
+void MainEditor::toggleEditMode()
+{
+	mEditorState.editMode = !mEditorState.editMode;
 	refreshAll();
 }
 
@@ -1019,4 +1054,78 @@ void MainEditor::setAudioDevice(const char *device)
 
 	const char *currentDevice = mMixer.getCurrentDeviceName();
 	mEditorState.audioDevice = currentDevice ? currentDevice : "";
+}
+
+void MainEditor::setPatternLength(int length)
+{
+	mSong.setPatternLength(length);
+}
+
+
+void MainEditor::setOctave(int octave)
+{
+	mEditorState.octave = std::min(15, std::max(0, octave));
+}
+
+
+void MainEditor::displayCommandPalette()
+{
+	commandSelector->setId(CommandSelection);
+	commandSelector->setTitle("Select command");
+	commandSelector->populate();
+	setModal(commandSelector);
+}
+
+
+void MainEditor::displayCommandOptionDialog(const CommandDescriptor& command)
+{
+	mSelectedCommand = &command;
+
+	if (commandOptionSelector != NULL)
+		delete commandOptionSelector;
+
+	commandOptionSelector = new CommandOptionSelector(mEditorState, command);
+	commandOptionSelector->setId(CommandOptionSelection);
+	commandOptionSelector->setTitle(command.name);
+	commandOptionSelector->populate();
+	setModal(commandOptionSelector);
+}
+
+
+void MainEditor::onRequestCommandRegistration()
+{
+	registerCommand("Editor", "Toggle play position following", [this]() { this->togglePositionFollowing(); }, SDLK_CAPSLOCK);
+	registerCommand("Editor", "Toggle edit mode", [this]() { this->toggleEditMode(); });
+	registerCommand("Song", "Reset song", [this]() { this->newSong(); this->showMessage(MessageInfo, "Song reset"); }, SDLK_n, KMOD_CTRL);
+	registerCommand("Song", "Load song", [this]() { this->displayLoadDialog(); }, SDLK_o, KMOD_CTRL);
+	registerCommand("Song", "Save song", [this]() { this->displaySaveDialog(); }, SDLK_s, KMOD_CTRL);
+	registerCommand("Song", "Play song", [this]() { this->playSong(); }, SDLK_RCTRL);
+	registerCommand("Song", "Play and loop pattern", [this]() { this->playPattern(); }, SDLK_RSHIFT);
+	registerCommand("Song", "Stop song", [this]() { this->stopSong(); });
+	registerCommand("Editor", "Mute all tracks", [this]() { this->muteTracks(); });
+	registerCommand("Editor", "Toggle track muting", [this](int value) {
+		this->toggleTrackMuting(value);
+	}, [this](CommandOptionSelector& selector) {
+		for (int o = 0 ; o <= SequenceRow::maxTracks ; ++o)
+			selector.addIntItem(o);
+	});
+	registerCommand("Editor", "Select output device", [this]() { this->displayAudioDeviceDialog(); });
+	registerCommand("Song", "Decrease pattern length", [this]() { this->setPatternLength(std::max(1, mSong.getPatternLength() - 1)); }, SDLK_F9);
+	registerCommand("Song", "Increase pattern length", [this]() { this->setPatternLength(std::max(1, mSong.getPatternLength() + 1)); }, SDLK_F10);
+
+	registerCommand("Song", "Set pattern length", [this](int value) {
+		this->setPatternLength(value);
+	}, [this](CommandOptionSelector& selector) {
+		const int lengths[] = { 4, 16, 32, 48, 64, 128 };
+		for (auto length : lengths)
+			selector.addIntItem(length);
+	});
+	registerCommand("Editor", "Set octave", [this](int value) {
+		this->setOctave(value);
+	}, [this](CommandOptionSelector& selector) {
+		for (int o = 0 ; o <= 15 ; ++o)
+			selector.addIntItem(o);
+	});
+	registerCommand("Editor", "Decrease octave", [this]() { this->setOctave(mEditorState.octave - 1); }, SDLK_F1);
+	registerCommand("Editor", "Increase octave", [this]() { this->setOctave(mEditorState.octave + 1); }, SDLK_F2);
 }

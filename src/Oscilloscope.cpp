@@ -34,6 +34,8 @@ void Oscilloscope::onDraw(Renderer& renderer, const SDL_Rect& area)
 	SDL_Point points[area.w];
 	SDL_Rect block = {};
 	SDL_Rect textPos = {};
+	
+	Theme::ColorType color;
 
 	if (mPlayer.getTrackState(mChannel).enabled)
 	{
@@ -52,7 +54,7 @@ void Oscilloscope::onDraw(Renderer& renderer, const SDL_Rect& area)
 			points[x].y = area.y + y;
 		}
 
-		renderer.renderPoints(points, area.w, Color());
+		color = Theme::ColorType::OscilloscopeColor;
 	}
 	else
 	{
@@ -65,10 +67,12 @@ void Oscilloscope::onDraw(Renderer& renderer, const SDL_Rect& area)
 		block = {area.x + 10, area.h / 2 - 2, 35, 9};
 		textPos = {block.x + 2, block.y + 1, 33, 8};
 
-//		renderer.renderPoints(points, area.w, Color());
 		renderer.renderRect(block, Color(255,0,0));
 		renderer.renderText(textPos, Color(), "mute");
+		color = Theme::ColorType::MutedOscilloscopeColor;
 	}
+	
+	renderer.renderPoints(points, area.w, color);
 }
 
 
